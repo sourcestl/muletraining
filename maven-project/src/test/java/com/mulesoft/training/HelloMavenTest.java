@@ -1,9 +1,11 @@
 package com.mulesoft.training;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
-@Ignore
+import org.junit.Test;
+import org.mule.api.MuleEvent;
+
+//@Ignore
 public class HelloMavenTest extends org.mule.tck.junit4.FunctionalTestCase {
 
 	
@@ -15,4 +17,12 @@ public class HelloMavenTest extends org.mule.tck.junit4.FunctionalTestCase {
 	protected String getConfigFile(){
 		return "maven-project.xml";
 	}
+	
+	 @Test
+	 public void retrieveFlightsAddsAppropriateHeader() throws Exception {
+	   MuleEvent event = runFlow("retrieveFlights");
+	   String contentType = event.getMessage().getOutboundProperty("Content-Type");
+	   assertEquals("application/json", contentType);
+	 }
+
 }
