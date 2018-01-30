@@ -2,6 +2,7 @@ package com.mulesoft.training;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.api.MuleEvent;
 
@@ -18,7 +19,7 @@ public class HelloMavenTest extends org.mule.tck.junit4.FunctionalTestCase {
 		return "maven-project.xml";
 	}
 	
-	 @Test
+	 @Test@Ignore
 	 public void retrieveFlightsAddsAppropriateHeader() throws Exception {
 	   MuleEvent event = runFlow("retrieveFlights");
 	   String contentType = event.getMessage().getOutboundProperty("Content-Type");
