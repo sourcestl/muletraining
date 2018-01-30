@@ -21,12 +21,18 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         <set-payload value="#['HELLO WORLD']" doc:name="Set Payload"/>
     </flow>
     <flow name="retrieveFlights">
-        <http:listener config-ref="HTTP_Listener_Configuration" path="/flights" doc:name="HTTP"/>
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/flights" doc:name="HTTP">
+            <http:response-builder>
+                <http:header headerName="Content-Type" value="application-json"/>
+            </http:response-builder>
+            <http:error-response-builder>
+                <http:header headerName="Content-Type" value="application/json"/>
+            </http:error-response-builder>
+        </http:listener>
         <db:select config-ref="Derby_Configuration" doc:name="Database">
             <db:parameterized-query><![CDATA[SELECT * FROM FLIGHTS]]></db:parameterized-query>
         </db:select>
         <json:object-to-json-transformer doc:name="Object to JSON"/>
-        <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
         <jms:outbound-endpoint queue="flights" connector-ref="Active_MQ" doc:name="JMS"/>
     </flow>
     <flow name="maven-projectFlow">
